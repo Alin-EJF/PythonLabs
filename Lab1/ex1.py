@@ -1,3 +1,7 @@
+'''
+aici era ideea sa ai mai multe numere de la tastatura si sa faci cmmdc-ul tuturor, also, vezi ca nu validezi input-ul, pot baga acolo niste litere si crapa
+'''
+
 import sys
 
 def cmmdc(a, b):
