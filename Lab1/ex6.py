@@ -1,3 +1,7 @@
+'''
+puteai direct sa faci return True if str(n) == str(n)[::-1]
+'''
+
 def palindrom(n):
     m = 0
 
