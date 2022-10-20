@@ -1,4 +1,4 @@
-def appear_x_times(x, lists):
+def appear_x_times(x, lists):  #maybe needed *lists, eh 
      appear_x_times_list = []
      appear_in_lists = []
 
