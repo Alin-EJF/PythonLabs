@@ -1,7 +1,4 @@
-'''
-puteai direct sa faci return True if str(n) == str(n)[::-1]
-'''
-
+"""
 def palindrom(n):
     m = 0
 
@@ -13,11 +10,15 @@ def palindrom(n):
             return True
 
     return False
+"""
+
+def is_palindrome(n):
+    return str(n) == str(n)[::-1]
 
 
 def main():
     n = int(input())
 
-    print(palindrom(n))
+    print(is_palindrome(n))
 
 main()
