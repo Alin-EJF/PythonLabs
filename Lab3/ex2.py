@@ -1,10 +1,7 @@
-def count_letters(text):
-    result = {}
-    for letter in text:
-        if letter in result:
-            result[letter] += 1
-        else:
-            result[letter] = 1
-    return result
+def count_letters(s):
+    return {i: s.count(i) for i in set(s)}
 
 print(count_letters("Helllloooooo"))
+
+#mai simplu asa
+
