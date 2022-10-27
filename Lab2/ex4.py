@@ -1,3 +1,6 @@
+'''
+puteai sa faci si cu '%' aici 
+'''
 def compose(musicalNotes, moves, start):
     song = []
     song.append(musicalNotes[start])
