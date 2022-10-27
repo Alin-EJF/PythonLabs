@@ -1,3 +1,7 @@
+'''
+yep, aici ar trebui sa padezi listele in cazul in care nu sunt de aceeasi lungime, altfel nu iti merge pe cazuri
+care sunt de diferite lungimi
+'''
 def list_of_tuples(*args):
     list_of_tuples = []
     for i in range(len(args[0])):  #might not cover all cases
