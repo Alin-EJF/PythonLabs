@@ -1,6 +1,6 @@
 import os
 
-def ex8(path: str) -> list[str]:
+def all_paths(path: str) -> list[str]:
     file_list = []
     for file in os.listdir(path):
         file_list.append(os.path.join(path, file))
@@ -8,4 +8,4 @@ def ex8(path: str) -> list[str]:
     return file_list
 
 
-print(ex8("C:\\Users\\Alin\\Desktop\\Anul3\\Python\\Lab1"))
+print(all_paths("C:\\Users\\Alin\\Desktop\\Anul3\\Python\\Lab1"))
