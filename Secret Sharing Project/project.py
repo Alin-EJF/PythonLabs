@@ -1,18 +1,19 @@
 import sys
+import re
 from mod import Mod
 from os import urandom
 
 global P  #large prime number (harder to crack)
 P = 2**521 - 1
 
-
+"""
 def int_from_bytes(s):
     acc = 0
     for b in s:
         acc = acc * 16
         acc += b
     return acc
-
+"""
 
 def int_from_bytes2(xbytes: bytes) -> int:
     return int.from_bytes(xbytes, 'big')
@@ -70,9 +71,9 @@ def split(n,m,file):
 
     
     if(secret < P):
-        print("YES, secret < P")
+        print("YES, secret < P checked")
     
-
+    
     secret = Mod(secret, P)
 
     polynomial = [secret]
@@ -81,7 +82,7 @@ def split(n,m,file):
 
     shards = {}
     for i in range(n):  #shares
-        x = Mod(int_from_bytes(urandom(16)), P)
+        x = Mod(int_from_bytes2(urandom(16)), P)
         y = evaluate(polynomial, x)
         shards[i] = (x, y)
 
@@ -89,7 +90,6 @@ def split(n,m,file):
         f = open(f"secret{i+1}.txt", "w")
         f.write(str(shards[i]))
         f.close()
-    
 
     #del shards[0] # for example 
     #del shards[1]
@@ -97,26 +97,23 @@ def split(n,m,file):
         
 
 def recompose(files):
-    print("Recomposing \n")
-    retrieved = []
+    print("\n Recomposing \n")
 
+    retrieved_shards = {}
     for i in range(0,len(files)):
-       retrieved.append(str(open(files[i],"r").read()))
+        data = str(open(files[i],"r").read())
+        numbers = re.findall(r'\d+', data)
+        retrieved_shards[i] = ( (Mod(int(numbers[0]),int(numbers[1]) )), (Mod(int(numbers[2]),int(numbers[3]) ))  )
+    
+    #print(retrieved_shards)
 
-    print(retrieved[0])
-      
-"""
-    #print(retrieved)
-
-    #retrieved = list(shards.values())
-
-    #print("Numbers of shards",len(retrieved))
-
-    #retrieved_secret = retrieve_original(retrieved, P)
-    #print(int_to_bytes(secret))
-    #print(retrieved_secret)
-    #check_equality(retrieved_secret, secret)
-"""
+    retrieved = list(retrieved_shards.values())
+    retrieved_secret = retrieve_original(retrieved, P)
+    try:
+     print("The message recomposed is: ", int_to_bytes(int(retrieved_secret)).decode("utf-8") + "\n")
+    except:
+        print("error: secret can't be decoded")
+    
 
 
 def run():
@@ -132,17 +129,9 @@ def run():
         print("\n Error: No command given, try -split or -recompose \n")
 
 
+
 # Main
 try:
   run()
 except Exception as e:
     print("Error: can't run program, cause :", e)
-
-
-#regex for first integer before %
-#^(\d+)%.*$
-
-
-
-
- #retrieved_secret_string = str(retrieved_secret) #to work on this
