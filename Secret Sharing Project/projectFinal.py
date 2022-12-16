@@ -22,10 +22,10 @@ def int_from_bytes2(xbytes: bytes) -> int:
 
 
 def int_to_bytes(x: int) -> bytes:
-    return x.to_bytes((x.bit_length() + 7) // 8, 'big')
+    return x.to_bytes((x.bit_length() + 7) // 8, 'big')  #didnt work for decoding
 
 
-def evaluate(coefficients, x):
+def evaluate(coefficients, x):      #values ​​of the polynomial at random points
     acc = 0
     power = 1
     for c in coefficients:
@@ -34,7 +34,7 @@ def evaluate(coefficients, x):
     return acc
 
 
-def retrieve_original(secrets ,P):
+def retrieve_original(secrets ,P):    #Lagrange interpolation polynomial (lowest degree that interpolates a given set of data)
     x_s = [s[0] for s in secrets]
     acc = Mod(0, P)
     for i in range(len(secrets)):
@@ -49,9 +49,9 @@ def retrieve_original(secrets ,P):
 
 def check_equality(retrieved_secret, secret): 
     if retrieved_secret == secret:
-        print("retrieved_secret == secret TRUE")
+        print("retrieved_secret == secret TRUE \n")
     else:
-        print("retrieved_secret == secret FALSE")
+        print("retrieved_secret == secret FALSE \n")
 
 
 
@@ -74,7 +74,7 @@ def split(n,m,file):
 
     
     if(secret < P):
-        print("YES, secret < P checked")
+        print("YES, secret < P checked, should work")
     
     
     secret = Mod(secret, P)
@@ -102,15 +102,23 @@ def split(n,m,file):
 def recompose(files):
     print("\n Recomposing \n")
 
+    setFiles = set(files)
+
+    if files != setFiles:
+     print("Careful, you might have file duplicates in command line arguments\n")
+
+    setFiles  = list(setFiles)
+
     retrieved_shards = {}
-    for i in range(0,len(files)):
-        data = str(open(files[i],"r").read())
+    for i in range(0,len(setFiles)):
+        data = str(open(setFiles[i],"r").read())
         numbers = re.findall(r'\d+', data)
         retrieved_shards[i] = ( (Mod(int(numbers[0]),int(numbers[1]) )), (Mod(int(numbers[2]),int(numbers[3]) ))  )
     
     retrieved = list(retrieved_shards.values())
     retrieved_secret = retrieve_original(retrieved, P)
 
+    """
     try:
         secret = open("secret.txt","r").read()
     except:
@@ -120,12 +128,25 @@ def recompose(files):
     secret = int_from_bytes2(secret.encode("utf-8"))    
     secret = Mod(secret, P)
 
-    check_equality(int(retrieved_secret), int(secret))
+    check_equality(int(retrieved_secret), int(secret))  #testing
+    """
 
     try:
-     print("The message recomposed is: ", int_to_bytes(int(retrieved_secret)).decode("utf-8")) #retrieved secret is too long
+     print("The message recomposed is: ", int_to_bytes(int(retrieved_secret)).decode("utf-8")) #retrieved secret can be too long
     except Exception as e:
         print("Can't decode retrieved secret, cause: ", e)
+
+    #write to file
+    f = open("RetrievedSecret.txt", "w")
+    try:
+     f.write(int_to_bytes(int(retrieved_secret)).decode("utf-8"))
+    except Exception as e:
+     print("Can't write secret to file, cause: ", e)
+
+    f.close()
+
+    
+
     
 
 
