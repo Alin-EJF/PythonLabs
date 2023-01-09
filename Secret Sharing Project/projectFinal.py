@@ -8,15 +8,6 @@ sys.set_int_max_str_digits(100000)
 global P  #large prime number (harder to crack)
 P = 2**99991 - 1   # the less it is the smaller the file
 
-"""
-def int_from_bytes(s):
-    acc = 0
-    for b in s:
-        acc = acc * 16
-        acc += b
-    return acc
-"""
-
 def int_from_bytes2(xbytes: bytes) -> int:
     return int.from_bytes(xbytes, 'big')
 
@@ -94,8 +85,6 @@ def split(n,m,file):
         f.write(str(shards[i]))
         f.close()
 
-    #del shards[0] # for example 
-    #del shards[1]
 
         
 
